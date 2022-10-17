@@ -1,5 +1,5 @@
-import fetch from 'node-fetch';
 import { HTTP_METHODS } from './global.d';
+import axios from 'axios';
 
 class BaseAPI {
   private apiKey: string;
@@ -16,26 +16,26 @@ class BaseAPI {
     }
   }
 
-  public async getAuthToken() {
-    const res = await fetch(`${this.rootUrl}/Tokens`, {
+  public async getAuthToken(): Promise<any> {
+    const res = await axios(`${this.rootUrl}/Tokens`, {
       method: 'post',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({
+      data: {
         clientId: this.clientId,
         apiKey: this.apiKey,
-      }),
+      },
     });
 
     if (res.status === 200) {
-      const { token, expires }: any = await res.json();
+      const { token, expires }: any = await res;
 
       this.authToken = token;
       this.authTokenExpires = expires;
       return;
     } else {
-      const json = await res.json();
+      const json = await res;
       if (json) {
         throw new Error(JSON.stringify(json));
       }
@@ -56,15 +56,15 @@ class BaseAPI {
     };
 
     if (body) {
-      options.body = JSON.stringify(body);
+      options.data = body;
     }
 
-    const res = await fetch(`${this.rootUrl}/${endpoint}`, options);
+    const res = await axios(`${this.rootUrl}/${endpoint}`, options);
     if (res.status === 200) {
-      const json = await res.json();
+      const json = await res;
       return json;
     } else {
-      const json = await res.json();
+      const json = await res;
       if (json) {
         throw new Error(JSON.stringify(json));
       }
