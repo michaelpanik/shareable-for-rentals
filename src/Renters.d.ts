@@ -1,4 +1,4 @@
-import { Address, PhoneType } from "./global.d";
+import { Address, PhoneType } from './global.d';
 
 type Person = {
   personId: number;

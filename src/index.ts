@@ -1,7 +1,7 @@
-import BaseAPI from "./BaseAPI";
-import { Landlords } from "./Landlords";
-import { Properties } from "./Properties";
-import { Renters } from "./Renters";
+import BaseAPI from './BaseAPI';
+import { Landlords } from './Landlords';
+import { Properties } from './Properties';
+import { Renters } from './Renters';
 
 export class ShareAble {
   private BaseAPI: BaseAPI;

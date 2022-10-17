@@ -1,6 +1,6 @@
-import BaseAPI from "./BaseAPI";
-import { HTTP_METHODS } from "./global.d";
-import { Property } from "./Properties.d";
+import BaseAPI from './BaseAPI';
+import { HTTP_METHODS } from './global.d';
+import { Property } from './Properties.d';
 
 export class Properties {
   private BaseAPI: BaseAPI;
@@ -13,14 +13,8 @@ export class Properties {
     return `Landlords/${landlordId}/Properties`;
   }
 
-  public async getOne(
-    landlordId: number,
-    propertyId: number
-  ): Promise<Property> {
-    const property = await this.BaseAPI.callApi(
-      this.getEndpoint(landlordId) + `/${propertyId}`,
-      HTTP_METHODS.GET
-    );
+  public async getOne(landlordId: number, propertyId: number): Promise<Property> {
+    const property = await this.BaseAPI.callApi(this.getEndpoint(landlordId) + `/${propertyId}`, HTTP_METHODS.GET);
     if (property.propertyId) {
       return property;
     } else {
@@ -28,18 +22,14 @@ export class Properties {
     }
   }
 
-  public async getAll(
-    landlordId: number,
-    pageNumber: number = 0,
-    pageSize: number = 10
-  ): Promise<Property[]> {
+  public async getAll(landlordId: number, pageNumber: number = 0, pageSize: number = 10): Promise<Property[]> {
     const params = new URLSearchParams();
-    params.append("pageNumber", pageNumber.toString());
-    params.append("pageSize", pageSize.toString());
+    params.append('pageNumber', pageNumber.toString());
+    params.append('pageSize', pageSize.toString());
 
     const property = await this.BaseAPI.callApi(
-      this.getEndpoint(landlordId) + "?" + params.toString(),
-      HTTP_METHODS.GET
+      this.getEndpoint(landlordId) + '?' + params.toString(),
+      HTTP_METHODS.GET,
     );
     if (property.propertyId) {
       return property;
@@ -49,11 +39,7 @@ export class Properties {
   }
 
   public async create(landlordId: number, property: Property) {
-    const newProperty = await this.BaseAPI.callApi(
-      this.getEndpoint(landlordId),
-      HTTP_METHODS.POST,
-      property
-    );
+    const newProperty = await this.BaseAPI.callApi(this.getEndpoint(landlordId), HTTP_METHODS.POST, property);
     if (newProperty.propertyId) {
       return newProperty;
     } else {
@@ -62,11 +48,7 @@ export class Properties {
   }
 
   public async update(landlordId: number, property: Property) {
-    const updatedProperty = await this.BaseAPI.callApi(
-      this.getEndpoint(landlordId),
-      HTTP_METHODS.PUT,
-      property
-    );
+    const updatedProperty = await this.BaseAPI.callApi(this.getEndpoint(landlordId), HTTP_METHODS.PUT, property);
     if (updatedProperty.propertyId) {
       return updatedProperty;
     } else {

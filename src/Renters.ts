@@ -4,18 +4,18 @@ import {
   CreateReportOutput,
   GetRenterOutput,
   UpdateRenterInput,
-} from "./Renters.d";
-import BaseAPI from "./BaseAPI";
-import { REPORT_TYPES, REQUESTED_PRODUCTS } from "./global.d";
+} from './Renters.d';
+import BaseAPI from './BaseAPI';
+import { REPORT_TYPES, REQUESTED_PRODUCTS } from './global.d';
 export enum HTTP_METHODS {
-  GET = "get",
-  POST = "post",
-  PUT = "put",
-  DELETE = "delete",
+  GET = 'get',
+  POST = 'post',
+  PUT = 'put',
+  DELETE = 'delete',
 }
 
 export class Renters {
-  private endpoint: string = "Renters";
+  private endpoint: string = 'Renters';
   private BaseAPI: BaseAPI;
 
   constructor(baseApi: BaseAPI) {
@@ -23,10 +23,7 @@ export class Renters {
   }
 
   public async getOne(renterId: number): Promise<GetRenterOutput> {
-    const renter = await this.BaseAPI.callApi(
-      `${this.endpoint}/${renterId}`,
-      HTTP_METHODS.GET
-    );
+    const renter = await this.BaseAPI.callApi(`${this.endpoint}/${renterId}`, HTTP_METHODS.GET);
     if (renter) {
       return renter;
     } else {
@@ -37,23 +34,21 @@ export class Renters {
   public async getReport(
     screeningRequestRenterId: number,
     requestedProduct?: REQUESTED_PRODUCTS,
-    reportType?: REPORT_TYPES
+    reportType?: REPORT_TYPES,
   ) {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
 
     if (requestedProduct) {
-      params.append("requestedProduct", requestedProduct);
+      params.append('requestedProduct', requestedProduct);
     }
 
     if (reportType) {
-      params.append("reportType", reportType);
+      params.append('reportType', reportType);
     }
 
     const renter = await this.BaseAPI.callApi(
-      `${
-        this.endpoint
-      }/ScreeningRequestRenters/${screeningRequestRenterId}/Reports${params.toString()}`,
-      HTTP_METHODS.GET
+      `${this.endpoint}/ScreeningRequestRenters/${screeningRequestRenterId}/Reports${params.toString()}`,
+      HTTP_METHODS.GET,
     );
     if (renter) {
       return renter;
@@ -64,12 +59,12 @@ export class Renters {
 
   public async createReport(
     screeningRequestRenterId: number,
-    newReport: CreateReportInput
+    newReport: CreateReportInput,
   ): Promise<CreateReportOutput> {
     const report = await this.BaseAPI.callApi(
       `${this.endpoint}/ScreeningRequestRenters/${screeningRequestRenterId}/Reports`,
       HTTP_METHODS.POST,
-      newReport
+      newReport,
     );
 
     if (report) {
@@ -79,49 +74,35 @@ export class Renters {
     }
   }
 
-  public async getAvailableReportNames(
-    screeningRequestRenterId: number
-  ): Promise<string[]> {
+  public async getAvailableReportNames(screeningRequestRenterId: number): Promise<string[]> {
     const reportNames = await this.BaseAPI.callApi(
       `${this.endpoint}/ScreeningRequestRenters/${screeningRequestRenterId}/Reports/Names`,
-      HTTP_METHODS.GET
+      HTTP_METHODS.GET,
     );
 
     if (reportNames) {
       return reportNames;
     } else {
-      throw Error(
-        `Unable to get report names for report with ID ${screeningRequestRenterId}.`
-      );
+      throw Error(`Unable to get report names for report with ID ${screeningRequestRenterId}.`);
     }
   }
 
-  public async create(
-    renter: CreateRenterInput
-  ): Promise<{ renterId: number }> {
-    const newRenter = await this.BaseAPI.callApi(
-      this.endpoint,
-      HTTP_METHODS.POST,
-      renter
-    );
+  public async create(renter: CreateRenterInput): Promise<{ renterId: number }> {
+    const newRenter = await this.BaseAPI.callApi(this.endpoint, HTTP_METHODS.POST, renter);
     if (newRenter) {
       return newRenter;
     } else {
-      throw Error("Unable to create renter.");
+      throw Error('Unable to create renter.');
     }
   }
 
   public async update(renter: UpdateRenterInput) {
-    const updatedRenter = await this.BaseAPI.callApi(
-      this.endpoint,
-      HTTP_METHODS.PUT,
-      renter
-    );
+    const updatedRenter = await this.BaseAPI.callApi(this.endpoint, HTTP_METHODS.PUT, renter);
 
     if (updatedRenter) {
       return updatedRenter;
     } else {
-      throw Error("Unable to update renter.");
+      throw Error('Unable to update renter.');
     }
   }
 }
