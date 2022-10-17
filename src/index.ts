@@ -3,7 +3,7 @@ import { Landlords } from "./Landlords";
 import { Properties } from "./Properties";
 import { Renters } from "./Renters";
 
-export default class ShareAble {
+export class ShareAble {
   private BaseAPI: BaseAPI;
   public Landlords: Landlords;
   public Renters: Renters;
